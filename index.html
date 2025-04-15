@@ -5,69 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Árvore de Habilidades</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #fafafa;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            padding: 20px;
+            background-image: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
         }
-        
+
         .tree-container {
             position: relative;
-            width: 80%;
-            height: 80%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .node {
             position: absolute;
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             background-color: #fff;
             border-radius: 50%;
-            border: 2px solid #333;
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
             cursor: pointer;
-            transition: transform 0.2s ease;
+            transition: transform 0.3s ease;
+            font-size: 12px;
         }
 
         .node img {
-            width: 30px;
-            height: 30px;
+            width: 40px;
+            height: 40px;
         }
 
         .node:hover {
-            transform: scale(1.1);
-        }
-
-        .connection {
-            position: absolute;
-            width: 2px;
-            background-color: #333;
-            transform-origin: top left;
+            transform: scale(1.2);
         }
 
         .description {
             position: absolute;
-            top: 60px;
+            top: 70px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: #f0f0f0;
+            background-color: #333;
+            color: #fff;
             padding: 10px;
             border-radius: 5px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            display: none;
             font-size: 0.9em;
-            width: 180px;
+            display: none;
+            width: 200px;
             text-align: center;
         }
 
@@ -76,50 +73,59 @@
             margin-top: 10px;
         }
 
-        .node1 { top: 20%; left: 45%; }
-        .node2 { top: 40%; left: 35%; }
-        .node3 { top: 40%; left: 55%; }
-        .node4 { top: 60%; left: 30%; }
-        .node5 { top: 60%; left: 50%; }
-        .node6 { top: 60%; left: 70%; }
+        /* Organize as fileiras (camadas da pirâmide) */
+        .node1 { top: 5%; left: 50%; }
+        .node2 { top: 20%; left: 20%; }
+        .node3 { top: 20%; left: 50%; }
+        .node4 { top: 20%; left: 80%; }
+        .node5 { top: 35%; left: 10%; }
+        .node6 { top: 35%; left: 30%; }
+        .node7 { top: 35%; left: 50%; }
+        .node8 { top: 35%; left: 70%; }
+        .node9 { top: 35%; left: 90%; }
+        .node10 { top: 50%; left: 15%; }
+        .node11 { top: 50%; left: 35%; }
+        .node12 { top: 50%; left: 55%; }
+        .node13 { top: 50%; left: 75%; }
+        .node14 { top: 50%; left: 95%; }
+        .node15 { top: 65%; left: 10%; }
+        .node16 { top: 65%; left: 30%; }
+        .node17 { top: 65%; left: 50%; }
+        .node18 { top: 65%; left: 70%; }
+        .node19 { top: 65%; left: 90%; }
+        .node20 { top: 80%; left: 25%; }
+        .node21 { top: 80%; left: 45%; }
+        .node22 { top: 80%; left: 65%; }
+        .node23 { top: 80%; left: 85%; }
 
-        .connection1 {
-            top: 45%;
-            left: 47%;
-            height: 40%;
-            transform: rotate(45deg);
+        /* Conexões */
+        .connection {
+            position: absolute;
             width: 2px;
+            background-color: #333;
+            z-index: -1;
         }
 
-        .connection2 {
-            top: 45%;
-            left: 53%;
-            height: 40%;
-            transform: rotate(-45deg);
-            width: 2px;
+        .line1 { top: 30%; left: 50%; width: 2px; height: 15%; }
+        .line2 { top: 45%; left: 20%; width: 2px; height: 15%; }
+        .line3 { top: 45%; left: 80%; width: 2px; height: 15%; }
+        .line4 { top: 60%; left: 10%; width: 2px; height: 15%; }
+        .line5 { top: 60%; left: 90%; width: 2px; height: 15%; }
+
+        .description p {
+            margin: 0;
         }
 
-        .connection3 {
-            top: 50%;
-            left: 37%;
-            height: 20%;
-            transform: rotate(90deg);
-            width: 2px;
-        }
-
-        .connection4 {
-            top: 50%;
-            left: 63%;
-            height: 20%;
-            transform: rotate(90deg);
-            width: 2px;
+        .description .progress {
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
     <div class="tree-container">
+        <!-- Habilidades -->
         <div class="node node1" id="node1" onclick="addPoints(1)" onmousedown="showDescription('desc1')" onmouseup="hideDescription('desc1')">
-            <img src="https://via.placeholder.com/30" alt="Ícone">
+            <img src="https://via.placeholder.com/40" alt="Ícone">
             <div class="description" id="desc1">
                 <p><strong>Habilidade 1</strong></p>
                 <p>Atributos: Aumento de resistência.</p>
@@ -128,7 +134,7 @@
         </div>
 
         <div class="node node2" id="node2" onclick="addPoints(2)" onmousedown="showDescription('desc2')" onmouseup="hideDescription('desc2')">
-            <img src="https://via.placeholder.com/30" alt="Ícone">
+            <img src="https://via.placeholder.com/40" alt="Ícone">
             <div class="description" id="desc2">
                 <p><strong>Habilidade 2</strong></p>
                 <p>Atributos: Aumento de dano.</p>
@@ -136,8 +142,9 @@
             </div>
         </div>
 
+        <!-- Continuar com as habilidades em fileiras -->
         <div class="node node3" id="node3" onclick="addPoints(3)" onmousedown="showDescription('desc3')" onmouseup="hideDescription('desc3')">
-            <img src="https://via.placeholder.com/30" alt="Ícone">
+            <img src="https://via.placeholder.com/40" alt="Ícone">
             <div class="description" id="desc3">
                 <p><strong>Habilidade 3</strong></p>
                 <p>Atributos: Aumento de velocidade.</p>
@@ -145,17 +152,27 @@
             </div>
         </div>
 
-        <!-- Adicione outros nós conforme necessário -->
-        
-        <!-- Conexões entre os nós -->
-        <div class="connection connection1"></div>
-        <div class="connection connection2"></div>
-        <div class="connection connection3"></div>
-        <div class="connection connection4"></div>
+        <!-- Adicione até 30 habilidades -->
+        <!-- Exemplo de mais 3 habilidades -->
+        <div class="node node4" id="node4" onclick="addPoints(4)" onmousedown="showDescription('desc4')" onmouseup="hideDescription('desc4')">
+            <img src="https://via.placeholder.com/40" alt="Ícone">
+            <div class="description" id="desc4">
+                <p><strong>Habilidade 4</strong></p>
+                <p>Atributos: Aumento de resistência ao fogo.</p>
+                <p class="progress" id="progress4">Progresso: 0/5</p>
+            </div>
+        </div>
+
+        <!-- Conexões entre os ícones -->
+        <div class="connection line1"></div>
+        <div class="connection line2"></div>
+        <div class="connection line3"></div>
+        <div class="connection line4"></div>
+        <div class="connection line5"></div>
     </div>
 
     <script>
-        let progress = {1: 0, 2: 0, 3: 0}; // Armazenar o progresso de cada habilidade
+        let progress = {1: 0, 2: 0, 3: 0, 4: 0}; // Armazenar progresso das habilidades
 
         // Mostrar a descrição ao segurar o mouse
         function showDescription(id) {
@@ -167,17 +184,16 @@
             document.getElementById(id).style.display = 'none';
         }
 
-        // Adicionar pontos à habilidade
+        // Adicionar pontos de progresso
         function addPoints(nodeId) {
             if (progress[nodeId] < 5) {
                 progress[nodeId]++;
                 document.getElementById('progress' + nodeId).innerText = 'Progresso: ' + progress[nodeId] + '/5';
 
-                // Quando o progresso atinge 5, desbloquear a próxima habilidade
+                // Quando atingir o progresso máximo, desbloquear a próxima habilidade
                 if (progress[nodeId] === 5) {
                     alert('Habilidade ' + nodeId + ' desbloqueada!');
                     // Aqui você pode adicionar lógica para desbloquear o próximo nó
-                    // Por exemplo, exibindo um novo nó ou alterando seu estilo para indicar que foi desbloqueado
                 }
             }
         }
