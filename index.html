@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Árvore de Habilidades</title>
+    <style>
+        body {
+            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWkbAM130_7CvsqZdfB8h7bsP89mtkCweHAW7q4MlQoM8BEUlp6J0jjCs&s=10');
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            font-family: 'Georgia', serif;
+        }
+
+        .tree-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+
+        .skill {
+            position: absolute;
+            width: 64px;
+            height: 64px;
+            border: 2px solid #000;
+            border-radius: 50%;
+            background-color: #fff;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .skill:hover {
+            transform: scale(1.2);
+        }
+
+        .skill img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        svg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="tree-container">
+        <svg>
+            <line x1="100" y1="100" x2="300" y2="200" stroke="white" stroke-width="3" />
+            <line x1="300" y1="200" x2="500" y2="120" stroke="white" stroke-width="3" />
+            <line x1="300" y1="200" x2="300" y2="400" stroke="white" stroke-width="3" />
+        </svg>
+
+        <div class="skill" style="top: 100px; left: 100px;">
+            <img src="https://static.wikia.nocookie.net/elderscrolls/images/b/b7/Spell_Electric_Spark.png" alt="Skill 1">
+        </div>
+        <div class="skill" style="top: 200px; left: 300px;">
+            <img src="https://static.wikia.nocookie.net/elderscrolls/images/5/5f/Spell_Fireball.png" alt="Skill 2">
+        </div>
+        <div class="skill" style="top: 120px; left: 500px;">
+            <img src="https://static.wikia.nocookie.net/elderscrolls/images/e/e9/Spell_Ice_Spikes.png" alt="Skill 3">
+        </div>
+        <div class="skill" style="top: 400px; left: 300px;">
+            <img src="https://static.wikia.nocookie.net/elderscrolls/images/2/25/Spell_Heal.png" alt="Skill 4">
+        </div>
+    </div>
+
+</body>
+
+</html>
