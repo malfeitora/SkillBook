@@ -37,6 +37,7 @@
             align-items: center;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             cursor: pointer;
+            transition: transform 0.2s ease;
         }
 
         .node img {
@@ -44,11 +45,35 @@
             height: 30px;
         }
 
+        .node:hover {
+            transform: scale(1.1);
+        }
+
         .connection {
             position: absolute;
             width: 2px;
             background-color: #333;
             transform-origin: top left;
+        }
+
+        .description {
+            position: absolute;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: none;
+            font-size: 0.9em;
+            width: 180px;
+            text-align: center;
+        }
+
+        .progress {
+            font-size: 0.8em;
+            margin-top: 10px;
         }
 
         .node1 { top: 20%; left: 45%; }
@@ -93,34 +118,69 @@
 </head>
 <body>
     <div class="tree-container">
-        <div class="node node1">
+        <div class="node node1" id="node1" onclick="addPoints(1)" onmousedown="showDescription('desc1')" onmouseup="hideDescription('desc1')">
             <img src="https://via.placeholder.com/30" alt="Ícone">
+            <div class="description" id="desc1">
+                <p><strong>Habilidade 1</strong></p>
+                <p>Atributos: Aumento de resistência.</p>
+                <p class="progress" id="progress1">Progresso: 0/5</p>
+            </div>
         </div>
 
-        <div class="node node2">
+        <div class="node node2" id="node2" onclick="addPoints(2)" onmousedown="showDescription('desc2')" onmouseup="hideDescription('desc2')">
             <img src="https://via.placeholder.com/30" alt="Ícone">
+            <div class="description" id="desc2">
+                <p><strong>Habilidade 2</strong></p>
+                <p>Atributos: Aumento de dano.</p>
+                <p class="progress" id="progress2">Progresso: 0/5</p>
+            </div>
         </div>
 
-        <div class="node node3">
+        <div class="node node3" id="node3" onclick="addPoints(3)" onmousedown="showDescription('desc3')" onmouseup="hideDescription('desc3')">
             <img src="https://via.placeholder.com/30" alt="Ícone">
+            <div class="description" id="desc3">
+                <p><strong>Habilidade 3</strong></p>
+                <p>Atributos: Aumento de velocidade.</p>
+                <p class="progress" id="progress3">Progresso: 0/5</p>
+            </div>
         </div>
 
-        <div class="node node4">
-            <img src="https://via.placeholder.com/30" alt="Ícone">
-        </div>
-
-        <div class="node node5">
-            <img src="https://via.placeholder.com/30" alt="Ícone">
-        </div>
-
-        <div class="node node6">
-            <img src="https://via.placeholder.com/30" alt="Ícone">
-        </div>
-
+        <!-- Adicione outros nós conforme necessário -->
+        
+        <!-- Conexões entre os nós -->
         <div class="connection connection1"></div>
         <div class="connection connection2"></div>
         <div class="connection connection3"></div>
         <div class="connection connection4"></div>
     </div>
+
+    <script>
+        let progress = {1: 0, 2: 0, 3: 0}; // Armazenar o progresso de cada habilidade
+
+        // Mostrar a descrição ao segurar o mouse
+        function showDescription(id) {
+            document.getElementById(id).style.display = 'block';
+        }
+
+        // Ocultar a descrição ao soltar o mouse
+        function hideDescription(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        // Adicionar pontos à habilidade
+        function addPoints(nodeId) {
+            if (progress[nodeId] < 5) {
+                progress[nodeId]++;
+                document.getElementById('progress' + nodeId).innerText = 'Progresso: ' + progress[nodeId] + '/5';
+
+                // Quando o progresso atinge 5, desbloquear a próxima habilidade
+                if (progress[nodeId] === 5) {
+                    alert('Habilidade ' + nodeId + ' desbloqueada!');
+                    // Aqui você pode adicionar lógica para desbloquear o próximo nó
+                    // Por exemplo, exibindo um novo nó ou alterando seu estilo para indicar que foi desbloqueado
+                }
+            }
+        }
+    </script>
 </body>
 </html>
