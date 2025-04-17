@@ -1,208 +1,183 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Árvore de Habilidades - RPG Medieval</title>
-    <style>
-        /* Reset básico */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        /* Estilo de fundo medieval */
-        body {
-            font-family: 'Garamond', serif;
-            background-color: #2E2A47;
-            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWkbAM130_7CvsqZdfB8h7bsP89mtkCweHAW7q4MlQoM8BEUlp6J0jjCs&s=10');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
-        }
-
-        /* Estilo da árvore de habilidades */
-        .tree-container {
-            position: relative;
-            width: 80%;
-            max-width: 1200px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* Nó da habilidade */
-        .node {
-            position: relative;
-            width: 60px;
-            height: 60px;
-            background-color: #8B4513; /* Cor medieval */
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            font-size: 12px;
-        }
-
-        /* Ícones dentro dos nós */
-        .node img {
-            width: 40px;
-            height: 40px;
-        }
-
-        /* Estilo ao passar o mouse sobre os ícones */
-        .node:hover {
-            transform: scale(1.2);
-        }
-
-        /* Descrição da habilidade */
-        .description {
-            position: absolute;
-            top: 70px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #333;
-            color: #fff;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 0.9em;
-            display: none;
-            width: 200px;
-            text-align: center;
-        }
-
-        .progress {
-            font-size: 0.8em;
-            margin-top: 10px;
-        }
-
-        /* Estilo das linhas de conexão entre os ícones */
-        .connection {
-            position: absolute;
-            width: 2px;
-            background-color: #fff;
-            z-index: -1;
-        }
-
-        /* Organizando as habilidades em formato pirâmide */
-        .node1 { top: 5%; left: 50%; }
-        .node2 { top: 20%; left: 25%; }
-        .node3 { top: 20%; left: 50%; }
-        .node4 { top: 20%; left: 75%; }
-        .node5 { top: 35%; left: 15%; }
-        .node6 { top: 35%; left: 35%; }
-        .node7 { top: 35%; left: 65%; }
-        .node8 { top: 35%; left: 85%; }
-        .node9 { top: 50%; left: 10%; }
-        .node10 { top: 50%; left: 30%; }
-        .node11 { top: 50%; left: 50%; }
-        .node12 { top: 50%; left: 70%; }
-        .node13 { top: 50%; left: 90%; }
-        .node14 { top: 65%; left: 5%; }
-        .node15 { top: 65%; left: 25%; }
-        .node16 { top: 65%; left: 45%; }
-        .node17 { top: 65%; left: 65%; }
-        .node18 { top: 65%; left: 85%; }
-        .node19 { top: 80%; left: 20%; }
-        .node20 { top: 80%; left: 40%; }
-        .node21 { top: 80%; left: 60%; }
-        .node22 { top: 80%; left: 80%; }
-
-        /* Estilo das progressões */
-        .progress-text {
-            font-size: 0.8em;
-            color: #FFD700; /* Dourado para destaque */
-            text-shadow: 1px 1px 2px black;
-        }
-
-    </style>
+  <meta charset="UTF-8">
+  <title>Árvore de Habilidades</title>
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+      overflow: hidden;
+      color: white;
+      font-family: sans-serif;
+      height: 200%; /* Aumenta a altura da página para permitir o arrasto para baixo */
+    }
+    #container {
+      position: relative;
+      width: 200vw; /* Largura aumentada para permitir o arrasto para a direita */
+      height: 200vh; /* Altura aumentada para permitir o arrasto para baixo */
+    }
+    .node {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #888;
+      transition: transform .2s;
+      cursor: pointer;
+    }
+    .node:hover {
+      transform: scale(1.5);
+      background: #fff;
+      z-index: 2;
+    }
+    .tooltip, .info {
+      position: absolute;
+      background: rgba(0,0,0,0.8);
+      border: 1px solid #999;
+      font-size: 12px;
+      color: white;
+      display: none;
+      pointer-events: none;
+    }
+    .tooltip {
+      padding: 4px 8px;
+    }
+    .info {
+      padding: 10px;
+      width: 200px;
+      top: 20px;
+      left: 20px;
+      pointer-events: auto;
+    }
+    svg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
 </head>
 <body>
-    <div class="tree-container">
-        <!-- Habilidades -->
-        <div class="node node1" id="node1" onclick="addPoints(1)" onmousedown="showDescription('desc1')" onmouseup="hideDescription('desc1')">
-            <img src="https://via.placeholder.com/40" alt="Ícone">
-            <div class="description" id="desc1">
-                <p><strong>Habilidade 1</strong></p>
-                <p>Atributos: Aumento de resistência.</p>
-                <p class="progress-text" id="progress1">Progresso: 0/5</p>
-            </div>
-        </div>
+  <div id="container">
+    <svg id="lines"></svg>
+    <div id="tooltip" class="tooltip"></div>
+    <div id="info" class="info"></div>
+  </div>
+  <script>
+    const container = document.getElementById("container");
+    const svg = document.getElementById("lines");
+    const tooltip = document.getElementById("tooltip");
+    const info = document.getElementById("info");
+    const totalSkills = 1000;
+    const skillsPerGroup = 50;
+    const groups = totalSkills / skillsPerGroup;
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+    let skillCount = 1;
 
-        <div class="node node2" id="node2" onclick="addPoints(2)" onmousedown="showDescription('desc2')" onmouseup="hideDescription('desc2')">
-            <img src="https://via.placeholder.com/40" alt="Ícone">
-            <div class="description" id="desc2">
-                <p><strong>Habilidade 2</strong></p>
-                <p>Atributos: Aumento de dano.</p>
-                <p class="progress-text" id="progress2">Progresso: 0/5</p>
-            </div>
-        </div>
+    // Nó central
+    const inicio = document.createElement("div");
+    inicio.className = "node";
+    inicio.style.left = `${centerX}px`;
+    inicio.style.top = `${centerY}px`;
+    inicio.style.background = "gold";
+    container.appendChild(inicio);
 
-        <!-- Continuar com mais habilidades -->
-        <div class="node node3" id="node3" onclick="addPoints(3)" onmousedown="showDescription('desc3')" onmouseup="hideDescription('desc3')">
-            <img src="https://via.placeholder.com/40" alt="Ícone">
-            <div class="description" id="desc3">
-                <p><strong>Habilidade 3</strong></p>
-                <p>Atributos: Aumento de velocidade.</p>
-                <p class="progress-text" id="progress3">Progresso: 0/5</p>
-            </div>
-        </div>
+    // Função para arrastar e mover a página
+    let isMouseDown = false;
+    let lastX = 0;
+    let lastY = 0;
 
-        <div class="node node4" id="node4" onclick="addPoints(4)" onmousedown="showDescription('desc4')" onmouseup="hideDescription('desc4')">
-            <img src="https://via.placeholder.com/40" alt="Ícone">
-            <div class="description" id="desc4">
-                <p><strong>Habilidade 4</strong></p>
-                <p>Atributos: Aumento de resistência ao fogo.</p>
-                <p class="progress-text" id="progress4">Progresso: 0/5</p>
-            </div>
-        </div>
+    container.addEventListener("mousedown", (e) => {
+      isMouseDown = true;
+      lastX = e.clientX;
+      lastY = e.clientY;
+    });
 
-        <!-- Mais habilidades aqui (faça o mesmo para até 30 habilidades) -->
+    window.addEventListener("mousemove", (e) => {
+      if (!isMouseDown) return;
 
-        <!-- Conexões entre os nós -->
-        <div class="connection" style="top: 15%; left: 50%; width: 2px; height: 10%;"></div>
-        <div class="connection" style="top: 30%; left: 25%; width: 2px; height: 10%;"></div>
-        <div class="connection" style="top: 30%; left: 50%; width: 2px; height: 10%;"></div>
-        <div class="connection" style="top: 30%; left: 75%; width: 2px; height: 10%;"></div>
-        <!-- Adicione mais conexões conforme necessário -->
+      const deltaX = e.clientX - lastX;
+      const deltaY = e.clientY - lastY;
 
-    </div>
+      container.style.left = `${container.offsetLeft + deltaX}px`;
+      container.style.top = `${container.offsetTop + deltaY}px`;
 
-    <script>
-        let progress = {1: 0, 2: 0, 3: 0, 4: 0}; // Armazenar progresso das habilidades
+      lastX = e.clientX;
+      lastY = e.clientY;
+    });
 
-        // Mostrar a descrição ao segurar o mouse
-        function showDescription(id) {
-            document.getElementById(id).style.display = 'block';
-        }
+    window.addEventListener("mouseup", () => {
+      isMouseDown = false;
+    });
 
-        // Ocultar a descrição ao soltar o mouse
-        function hideDescription(id) {
-            document.getElementById(id).style.display = 'none';
-        }
+    for (let g = 0; g < groups; g++) {
+      const angleOffset = (Math.PI * 2 / groups) * g;
+      const radius = 300 + g * 60;
+      let nodes = [];
 
-        // Adicionar pontos de progresso
-        function addPoints(nodeId) {
-            if (progress[nodeId] < 5) {
-                progress[nodeId]++;
-                document.getElementById('progress' + nodeId).innerText = 'Progresso: ' + progress[nodeId] + '/5';
+      for (let i = 0; i < skillsPerGroup; i++) {
+        const angle = angleOffset + (i * (Math.PI * 2 / skillsPerGroup)) / 2;
+        const x = centerX + Math.cos(angle) * radius;
+        const y = centerY + Math.sin(angle) * radius;
+        const node = document.createElement("div");
+        node.className = "node";
+        node.style.left = `${x}px`;
+        node.style.top = `${y}px`;
 
-                // Quando atingir o progresso máximo, desbloquear a próxima habilidade
-                if (progress[nodeId] === 5) {
-                    alert('Habilidade ' + nodeId + ' desbloqueada!');
-                    // Aqui você pode adicionar lógica para desbloquear o próximo nó
-                }
-            }
-        }
-    </script>
+        const levelReq = skillCount;
+        const skillName = `Skill ${skillCount}`;
+        const type = ['Ataque', 'Buff', 'Debuff', 'Defesa'][g % 4];
+        const description = `Habilidade do tipo ${type}`;
+        const attributes = `+${Math.floor(skillCount / 50) + 1} ${type === 'Ataque' ? 'Força' : type === 'Buff' ? 'Fé' : type === 'Debuff' ? 'Arcano' : 'Vigor'}`;
+
+        node.addEventListener("mouseenter", e => {
+          tooltip.style.display = "block";
+          tooltip.innerHTML = `<strong>${skillName}</strong><br>${description}<br>Requer nível: ${levelReq}`;
+        });
+        node.addEventListener("mousemove", e => {
+          tooltip.style.left = e.pageX + 15 + 'px';
+          tooltip.style.top = e.pageY + 15 + 'px';
+        });
+        node.addEventListener("mouseleave", () => tooltip.style.display = "none");
+
+        node.addEventListener("click", () => {
+          info.style.display = "block";
+          info.innerHTML = `
+            <strong>${skillName}</strong><br>
+            Tipo: ${type}<br>
+            ${description}<br>
+            Requer nível: ${levelReq}<br>
+            Atributo bônus: ${attributes}<br>
+            Habilidade: ${type === 'Ataque' ? 'Golpe Arcano' : type === 'Buff' ? 'Bênção Divina' : type === 'Debuff' ? 'Maldição Sombria' : 'Barreira Sagrada'}
+          `;
+        });
+
+        container.appendChild(node);
+        nodes.push({ x, y });
+        skillCount++;
+      }
+
+      for (let j = 0; j < nodes.length - 1; j++) {
+        const a = nodes[j], b = nodes[j + 1];
+        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("x1", a.x + 8);
+        line.setAttribute("y1", a.y + 8);
+        line.setAttribute("x2", b.x + 8);
+        line.setAttribute("y2", b.y + 8);
+        line.setAttribute("stroke", "#555");
+        svg.appendChild(line);
+      }
+
+      const first = nodes[0];
+      const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      line.setAttribute("x1", first.x + 8);
+      line.setAttribute("y1", first.y + 8);
+      line.setAttribute("x2", centerX + 8);
+      line.setAttribute("y2", centerY + 8);
+      line.setAttribute("stroke", "#777");
+      svg.appendChild(line);
+    }
+  </script>
 </body>
 </html>
